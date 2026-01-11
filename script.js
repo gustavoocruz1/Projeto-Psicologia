@@ -52,32 +52,41 @@ contactForm.addEventListener('submit', function(e) {
     e.preventDefault();
     
     // Get form data
-    const formData = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        service: document.getElementById('service').value,
-        message: document.getElementById('message').value
-    };
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const service = document.getElementById('service').value;
+    const message = document.getElementById('message').value;
 
     // Validate form
-    if (!formData.name || !formData.email) {
+    if (!name || !email) {
         alert('Por favor, preencha os campos obrigatórios.');
         return;
     }
 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
+    if (!emailRegex.test(email)) {
         alert('Por favor, insira um e-mail válido.');
         return;
     }
 
-    // Simulate form submission
-    console.log('Form data:', formData);
+    // Create WhatsApp message
+    const serviceText = service ? `Serviço: ${service}` : 'Serviço: Não informado';
+    const phoneText = phone ? `Telefone: ${phone}` : 'Telefone: Não informado';
     
-    // Show success message
-    alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');
+    const whatsappMessage = `*Nova mensagem do site de Psicologia*%0A%0A` +
+        `*Nome:* ${name}%0A` +
+        `*E-mail:* ${email}%0A` +
+        `${phoneText}%0A` +
+        `${serviceText}%0A%0A` +
+        `*Mensagem:* ${message || 'Não informada'}`;
+
+    // Open WhatsApp with the message
+    const whatsappNumber = '5534988680803';
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+    
+    window.open(whatsappUrl, '_blank');
     
     // Reset form
     contactForm.reset();
